@@ -6,8 +6,7 @@
   "scripts": {
     "watch:sass": "node-sass sass/main.scss css/style.css -w",
     "devserver": "live-server",
-    "edit":"npm-run-all --parallel devserver watch:sass",
-
+    "edit": "npm-run-all --parallel devserver watch:sass",
     "compile:sass": "node-sass sass/main.scss css/style.comp.css",
     "concat:css": "concat -o css/style.concat.css css/icon-font.css css/style.comp.css",
     "prefix:css": "postcss --use autoprefixer -b 'last 10 versions' css/style.concat.css -o css/style.prefix.css",
@@ -28,6 +27,5 @@
     "hoek": "^5.0.3",
     "event-stream": ">=4.0.0",
     "lodash": ">=4.17.11"
-    
   }
 }
