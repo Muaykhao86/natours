@@ -25,6 +25,9 @@
     "postcss-cli": "^6.0.0"
   },
   "dependencies": {
-    "hoek": "^5.0.3"
+    "hoek": "^5.0.3",
+    "event-stream": ">=4.0.0",
+    "lodash": ">=4.17.11"
+    
   }
 }
