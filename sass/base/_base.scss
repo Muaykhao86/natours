@@ -1,0 +1,69 @@
+// Base- Basic definitions of the entire project
+
+
+/* Good Practice!
+Below is a global reset to reset browser settings in all browsers so everything is rendered the same, borders, font etc
+Inherit is forcing what ever is in the body to be inherited by:
+* = all elements *::after/before = all sudo after and before elements (everthing!)*/
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html{
+/* A global definition of what defines what one rem should be
+ 62.5% of 16px (browser default)
+= 10 px / 1rem 
+ ALSO 
+ makes it easier to change global font settings through oyt website*/
+    font-size: 62.5%; //1rem = 10px // 10px/16px = 0.625 0r 62.5%
+
+    /* To be used with the mixin manager using the if statememnt and @content where BELOW is passed to it*/
+   
+    // @include respond(phone){ //not needed as tab-port is 50%
+    //     font-size:50%;
+    // }
+
+    // desending - ALWAYS THE LARGER BEFORE THE SMALL on desktop first// if mobile first small to large
+    
+    @include respond(tab-land){ // width < 1200px //
+        font-size:56.25%; // 1rem = 9px, 9/16 = 0.5625 / 56.25%
+    }
+    
+    @include respond(tab-port){ // width < 900px // cascading - the last one is taken when conflicting and its the smallest so thats what we want as they are all smaller than the above
+        font-size:50%; // 1rem = 8px, 8/16 = 0.50 / 50%
+    }
+    
+    // @include respond(phone){ // width < 600px // cascading - the last one is taken when conflicting and its the smallest so thats what we want as they are all smaller than the above
+    //     font-size:31.25%; // 1rem = 5px 5/16 = 0.3125 / 31.25%
+    // }
+   
+    @include respond(big-desktop){ // width > 1800px This can be where ever as it will only get trigggered above 1880px which will obviously not be < 1200px
+        font-size: 75%; // 1rem = 12px, 12/16 = 0.75 / 75%
+    }
+
+}
+
+/* Good practice 
+    -The parent element font is passed down
+    -The Border box takes away the padding/border etc of the box model width */
+body {
+    box-sizing: border-box;
+    padding: 3rem; //white border padding
+
+    @include respond(tab-port){ 
+        padding: 0;
+       
+    }
+}
+
+//BELOW- ::selection - represents the highlighted area of text selected 
+::selection{
+    background-color: $color-primary;
+    color: $color-white;
+}
+
+

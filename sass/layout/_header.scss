@@ -1,0 +1,67 @@
+// Could be classed as a component or layout really
+
+.header{
+    height: 85vh;
+    background-image: linear-gradient(
+    to right bottom, 
+    rgba($color-primary-light, 0.8),
+    rgba($color-primary-dark, 0.8)), 
+    url(../img/hero-small.jpg);
+    background-size: cover;
+    background-position: top;
+    position: relative;
+   
+
+    @supports(clip-path: polygon(0 0)) or (-webkit-clip-path: polygon(0 0)){//If the browser supports clip path then use it, if not use a smaller header 85vh
+        height: 95vh;
+        -webkit-clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+        clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+    }
+
+//    Below- Instead of adjusting the content when the screen size changes you can also use media queries on change of RESOLUTION
+//           and you can always use them together by writing 'and'
+//           A setting of 192 DOTS PER INCH as that is the display resolution of the apple retina screen
+//           As its min - when ever the res is higher than 192dpi the code below will be applied and will use the bigger px img as well as 
+//           when the screen is larger than 600px
+   @media only screen and (min-resolution:192dpi) and (min-width: 37.5em),
+//  Below - A property that describes the same as above (2 px per 1px) but safari doesnt recognise 192dpi so need to add this!
+only screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 37.5em),
+//  Below - When the screen reaches 2000px it will aply the below code regardless of res 
+//  The comma acts like a OR so you can have MULTIPLE CONDITIONS 
+// Note always converting pixels to em 600px/16px 2000px/16px
+only screen and (min-width: 125em){
+    background-image: linear-gradient(
+                 to right bottom, 
+                 rgba($color-primary-light, 0.8),
+                 rgba($color-primary-dark, 0.8)), 
+                 url(../img/hero.jpg);
+   }
+
+   
+    
+    @include respond(phone){
+        -webkit-clip-path: polygon(0 0, 100% 0, 100% 85vh, 0 100%); //to get rid of steep line on sml devices
+        clip-path: polygon(0 0, 100% 0, 100% 85vh, 0 100%);
+    
+    }
+    // Below-nested
+    &__logo-box{
+        position: absolute;
+        top: 4rem;
+        left: 4rem;
+    
+    }
+    &__logo{
+        height: 3.5rem;
+    }
+    /* Below - centered, the top and left are reffering to the parent and
+    -50% is referring to the actual element to center itself
+    perfect center would be 50%, 50% in a normal box*/
+    &__text-box{
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+}

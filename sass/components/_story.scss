@@ -1,0 +1,96 @@
+.story{
+    width:75%;
+ // Because its a block element inside of another block element we can use this 
+    margin: 0 auto; 
+    box-shadow: $box-shadow-3;
+    background-color: rgba($color-white, .5);
+    border-radius: $default-border-radius;
+    padding: 6rem;
+    padding-left: 9rem; //6rem plus the 3rem from translating the circle
+    font-size: $default-font-size;
+    transform: skewX(-12deg);
+
+    @include respond(tab-port){
+        width: 100%;
+        padding: 4rem;
+    padding-left: 7rem;
+    }
+
+    @include respond(phone){
+        transform: skewX(0);
+    }
+    
+    &__shape{
+        position: relative;
+        height:15rem;
+        width:15rem;
+        float: left;
+        
+        overflow: hidden;
+        border-radius: 50%;//for firefox as clip-path/shape-outside doesnt work
+       
+        //Below- If clip path is supported then use it if not we need to use a smaller image//overflow hidden helps by hiding anything outside of the container
+        @supports(clip-path: polygon(0 0)) or (-webkit-clip-path: polygon(0 0)){
+            -webkit-clip-path: circle(50% at 50% 50%); 
+            clip-path: circle(50% at 50% 50%); 
+            // Below property- to make the text move a around a shape you can use this, state the shape(radius of shape at position y position x)
+            // In order for this to work the element needs to be floated and have defined dimentions WxH
+            -webkit-shape-outside: circle(50% at 50% 50%); 
+            shape-outside: circle(50% at 50% 50%); 
+
+            border-radius: none; //If clip path works we dont want any border radius
+        }
+       
+       
+        // Best way to add space to a element that is floated is not to use margins but use transform instead
+        transform: translateX(-3rem) translateY(-1rem) skewX(12deg);
+
+        @include respond(phone){
+            transform: translateX(-3rem) translateY(-1rem) skewX(0);
+        }
+    }
+
+    &__img{
+        position: absolute;
+        height: 100%; //of the parent shape -15rem
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) translateX(-1rem) scale(1.4);// cannot use the mixin here as you can only specify One transform per element
+        backface-visibility: hidden;//to hide animation shake/bug
+        transition: all .5s;
+    }
+
+    &__text{
+        transform: skewX(12deg);
+
+        @include respond(phone){
+            transform: skewX(0);
+        }
+    }
+
+    &__caption{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, 20%);
+        color: $color-white;
+        text-transform: uppercase;
+        font-size: 1.7rem;
+        text-align: center;
+        opacity: 0;
+        transition: all .5s;
+        backface-visibility: hidden;//to hide animation shake/bug
+   
+    }
+    &:hover &__caption{
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+    &:hover &__img{
+        opacity: 1;
+        transform: translate(-50%, -50%)  translateX(3rem) scale(1);
+        // Property to adjust images filters like photo editor
+        filter: blur(.3rem) brightness(80%);
+
+    }
+}

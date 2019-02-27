@@ -1,0 +1,173 @@
+.navigation{
+
+    &__checkbox{
+        display: none;//we never want to see the check box, just link to it
+    }
+
+    &__button{//label linked to checkbox
+        background-color: $color-white;
+        height: 7rem;// To make sure the back ground is covered
+        width: 7rem;
+        border-radius: 50%;
+        position: fixed;
+        top:6rem;// 6rem because its 1rem bigger than the background so half of the 1rem difference in size
+        right:6rem;
+        z-index: 2000;
+        box-shadow: $box-shadow-button-1;
+        text-align: center;//centers the icon lines horizontally
+        cursor: pointer;
+
+        @include respond (tab-port){
+            top:3rem;
+            right: 3rem;
+        }
+    
+    }
+
+    &__background{
+        height: 6rem;//height and width the same as its a circle
+        width: 6rem;
+        border-radius: 50%;
+        position: fixed; //similar to absolute but it doesnt change position as you scoll the page/takes the element out of the flow and allows you to specify its position in relation to a positioned element
+        top:6.5rem;
+        right:6.5rem;
+        background-image: radial-gradient($color-primary-light, $color-primary-dark);//starts from a single point and moves out in all directions
+        z-index: 1000;//note- position needs to be designed to make this work/ just set it really high so nothing goes infront of it
+        transition: transform .8s cubic-bezier(0.86, 0, 0.07, 1);//custom transition see easings.net
+    
+        @include respond (tab-port){
+            top:3.5rem;
+            right: 3.5rem;
+        }
+    
+    }
+
+    &__nav{
+        height: 100vh;// 100% of the viewport height and width to cover the whole page
+        
+        position: fixed;
+        top:0;//starting at the top right corner and spanning over the while viewport (100vh)
+        left:0;
+        z-index:1500; // just needs to be higher than the background / number doesnt actually matter what it is
+    
+        opacity: 0;
+        width: 0;
+        transition: all .8s cubic-bezier(0.68, -0.55, 0.265, 1.55);//custom transition see easings.net
+    
+
+    }
+
+    &__list{
+        @include absCenter; //perfect center mixin
+        list-style: none;
+        text-align: center;
+        width: 100%; //to avoid it moving weird when we transition on menu click
+    }
+
+    &__item{
+        margin: 1rem;
+
+    }
+
+    &__link{
+
+        &:link,         //normal state
+        &:visited{
+        display: inline-block; //needs to be inline block to make padding vertical and translateX work properly
+        font-size: 3rem;
+        font-weight: 300;
+        padding: 1rem 2rem; 
+        color: $color-white;
+        text-decoration: none;
+        text-transform: uppercase;
+        border-radius: 50rem;
+        background-image: linear-gradient(120deg,
+        transparent 0%,
+        transparent 50%,
+        $color-white 50%
+        );
+        background-size: 250%; //the white of the background has just been pushed over due to the increase in background size
+        transition: all .4s;  
+         
+        span{//for added numbering of links(optional)
+            display: inline-block;
+            margin-right: 1.5rem;
+        }
+    
+        }
+        
+        &:hover,    //hover/active state
+        &:active{
+            background-position: 100%;// the background position moves from the left as you increase the %  
+            color: $color-primary;
+            transform: translateX(1rem);
+        }
+
+    }
+
+    //FUNCTIONALITY
+
+    &__checkbox:checked ~ &__background{ // selected the sibling __background when the checkbox is checked the background appears
+        transform: scale(80); //nav background scales from behind nav to cover whole page when check box is checked
+    }
+
+    &__checkbox:checked ~ &__nav{//navigation becomes visible when checkboxchecked
+        width: 100%;
+        opacity: 1;
+        
+    }
+
+    //ICON - created two sudo elements of one span/line rather than create three elements
+
+    &__icon{
+        position: relative;//parent element
+        margin-top: 3.5rem;// centerin the icon lines vertically
+
+        &,//icon, infront, behind elements
+        &::before,
+        &::after{
+            width: 3rem;
+            height: 2px;//px because no matter what size it should always be 2px
+            background-color: $color-grey-dark-3;
+            display: inline-block;
+        }
+
+        &::before,//to have before and after sudo property you NEED to specify content
+        &::after{
+        content: "";
+        position: absolute;// brings them to same position -
+        left: 0;
+        transition: all .2s;
+        }
+
+        &::before{
+            top: -.8rem; //puts the before sudo line just above the absolute position 
+        }
+
+        &::after{
+            top: .8rem; //puts the after sudo line just below the absolute position 
+        }
+
+    }
+
+    &__button:hover &__icon::before{ // can select it like this because ts a child of the label button
+        top:-1rem;
+    }
+    &__button:hover &__icon::after{
+        top: 1rem;
+    }
+
+    &__checkbox:checked + &__button &__icon{ //+ direct sibling / ~ works aswell---just changing the original icon transparent, no need to move it or take it away!
+        background-color: transparent;
+    }
+
+    &__checkbox:checked + &__button &__icon::before{
+        transform: rotate(135deg);// can use transform-origin: left/right/center which specifies where the animation on the object takes place
+        top:0;
+    } 
+    &__checkbox:checked + &__button &__icon::after{
+        transform: rotate(-135deg);
+        top:0;
+
+    } 
+}

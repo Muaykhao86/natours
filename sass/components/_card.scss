@@ -1,0 +1,247 @@
+.card{
+    // Below - Functionalty
+    // have to set the parent perspective first and need to write a mozFireFox webkit fix
+    // perspctive- appears as though its coming towards you/the lower the number the more dramatic 
+    -ms-perspective: 150rem;
+    perspective: 150rem;
+    position: relative;
+    // Below - when using absolute it takes the cards out of the normal flow so the card parent height
+    // collapses so we have to set the card height to the same as its children
+    height: 52rem;
+  
+    
+    //Below- each side of the card 
+    &__side{
+        // display: inline-block;
+        text-align: center;
+        position: absolute;
+        width: 100%;
+        top: 0;
+        left: 0;
+        // Below - stops the image overflowing the parent element/card
+        overflow: hidden;
+
+        height: 52rem;
+        transition: all .8s ease;
+        -webkit-backface-visibility: hidden; //for safari
+        backface-visibility: hidden; 
+
+        border-radius: $default-border-radius;
+        box-shadow:$box-shadow-1;
+        
+
+
+        &--front{
+            background-color: $color-white;
+        }
+
+        &--back{
+            transform: rotateY(180deg);
+            &-1{
+                background-image: linear-gradient(to right bottom, $color-secondary-light, $color-secondary-dark);   
+            }
+            &-2{
+                background-image: linear-gradient(to right bottom, $color-primary-light, $color-primary-dark);   
+            }    
+            &-3{
+                background-image: linear-gradient(to right bottom, $color-tertiary-light, $color-tertiary-dark); 
+            }
+        }
+    }
+
+    //  Below - when we hover the card we want to select the side--front to transform
+    &:hover &__side--front{
+        transform: rotateY(-180deg);
+    }
+    &:hover &__side--back{
+        transform: rotateY(0);
+    }
+
+    // Front side styling
+        &__picture{
+        
+            background-size: cover;
+            height: 23rem;
+            // Below- new css property to blend the back grounds for each card
+            background-blend-mode: screen;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            -webkit-clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            // Below- clip path can remove the overflow sometimes if it does use this
+            // border-top-left-radius: 3rem;
+            // border-top-right-radius: 3rem;
+
+        &--1{
+            background-image: url(../img/nat-5-small.jpg), linear-gradient(to right bottom, $color-secondary-light, $color-secondary-dark);
+            
+            @media (min-resolution:192dpi), (min-width: 125em),
+            (-webkit-min-device-pixel-ratio: 2) and (min-width: 125em){
+                background-image: 
+                url(../img/nat-5.jpg), 
+                linear-gradient(to right bottom, $color-secondary-light, $color-secondary-dark);
+            }
+        }
+        &--2{
+            background-image: url(../img/nat-6-small.jpg), linear-gradient(to right bottom, $color-primary-light, $color-primary-dark);
+        
+            @media (min-resolution:192dpi), (min-width: 125em),
+            (-webkit-min-device-pixel-ratio: 2) and (min-width: 125em){
+                background-image: 
+                url(../img/nat-6.jpg), 
+                linear-gradient(to right bottom, $color-primary-light, $color-primary-dark);
+            }
+        }
+
+        &--3{background-image: url(../img/nat-7-small.jpg), linear-gradient(to right bottom, $color-tertiary-light, $color-tertiary-dark);
+            
+            @media (min-resolution:192dpi), (min-width: 125em),
+            (-webkit-min-device-pixel-ratio: 2) and (min-width: 125em){
+                background-image: 
+                url(../img/nat-7.jpg), 
+                linear-gradient(to right bottom, $color-tertiary-light, $color-tertiary-dark);
+            }
+        }
+
+       
+    }
+
+    &__heading{
+        font-size: 2.8rem;
+        font-weight: 300;
+        text-transform: uppercase;
+        color: $color-white;
+        position: absolute;
+        top:12rem;
+        right: 2rem;
+        text-align: right;
+        width: 75%; 
+    }
+
+    &__heading-span{
+        padding: 1rem 1.5rem;
+        // Below- clones al the properties to te boxes created by padding etc
+        -webkit-box-decoration-break: clone;    
+        box-decoration-break: clone;    
+        &--1{
+            background-image: linear-gradient(to right bottom, rgba($color-secondary-light, .85), rgba($color-secondary-dark, .85));
+        }
+        &--2{
+            background-image: linear-gradient(to right bottom, rgba($color-primary-light, .85), rgba($color-primary-dark, .85));
+        }
+        &--3{
+            background-image: linear-gradient(to right bottom, rgba($color-tertiary-light, .85), rgba($color-tertiary-dark, .85));
+        }
+    }
+
+    &__details{
+        padding: 3rem;
+        ul{
+            list-style: none;
+            width:80%;
+            // basic/easy way to center margin 0 top and bottom and left and right automatically set by browser
+            margin: 0 auto;
+            li{
+                text-align: center;
+                font-size: 1.5rem;
+                padding: 1rem;
+
+                &:not(:last-child){
+                    border-bottom: .1rem solid $color-grey-light-2;
+                }
+            }
+        }
+    }
+
+    // Back of card styling
+
+    &__cta{
+        // Below- center page mixin
+        @include absCenter;
+        // Below- to stop the button adapting its width to the cta box size we make the cta 90% of the card size
+        width: 90%;
+        text-align: center;
+    }
+
+    &__price-box{
+        
+        margin-bottom: 8rem;
+        color: $color-white;
+    }
+
+    &__price-only{
+        font-size: 1.4rem;
+        text-transform: uppercase;
+
+    }
+
+    &__price-value{
+        // with bigger writing its better to use thin text
+        font-size: 6rem;
+        font-weight: 100;
+    }
+
+    
+    //////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    
+        // @include respond(tab-port){ removed as you cant add on to mixin
+        //Have to rewrite the card for smaller screens AND touch screens (where the user CANNOT use hover)as you cant click to view the back. So copy everything then remove what you dont need/dont want to change
+        @media only screen and (max-width:56.25em), 
+        only screen and (hover: none){
+        border-radius: 3rem;//border radius is now on the  container itself 
+        height: auto;//no longer nessasary to have the front/ back the same and fit the container
+        background-color: $color-white;
+        box-shadow: $box-shadow-1;
+        overflow: hidden;
+
+        &__side{
+            
+            border-radius: 0;
+            height: auto;
+            position: relative; //as theres no longer two sides occupying the same space
+            box-shadow: none;//remove it then add it to the card
+              
+            &--back{
+                transform: rotateY(0);
+                clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%);
+            }
+        }
+        
+        &:hover &__side--front{
+            transform: rotateY(0);
+        }
+
+        &__details{
+            padding: 1rem 3rem;
+        }
+    
+        // Front side styling for mobile/tablet
+
+        &__cta{
+            position: relative;
+            top:0;
+            left: 0;
+            transform: translate(0);
+            width: 100%;
+            padding: 7rem 4rem 4rem 4rem;
+           
+           
+        }
+
+        &__price-box{
+            margin-bottom: 3rem;
+        }
+
+
+        &__price-value{ 
+            font-size: 5rem;
+           
+        }
+
+    }
+
+}

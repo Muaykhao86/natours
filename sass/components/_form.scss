@@ -1,0 +1,109 @@
+.form{
+
+    &__group:not(:last-child){
+        margin-bottom: 2rem;
+
+    }
+    
+    &__input{
+        font-size: 1.5rem;
+        font-family: inherit; //as the browser doesnt pass it down to inputs
+        color: inherit;
+        padding: 1.5rem 2rem; // Give elements more padding on the side to make them look better
+        border-radius: .3rem;
+        background-color: rgba($color-white, .8);
+        border: none;
+        border-bottom: .3rem solid transparent;//so the box doesnt move down when focused
+        width: 90%;
+        display: block;// takes up 100% of te width
+        transition: all .3s;
+        
+        @include respond (tab-port){
+            width:100%; 
+        }
+
+        &::-webkit-input-placeholder{
+            color: $color-grey-dark-2;
+        }
+
+        &:focus{
+            outline: none; //to get rid of blue outline when focused
+            box-shadow: $box-shadow-4; //so that keyboard only users no what is active/focused..should not get rid of completely    
+            border-bottom: .3rem solid $color-primary;
+        
+        &:invalid{
+            border-bottom: .3rem solid $color-secondary-dark;//sudo class that allows us to use a valid/invalid input element
+        }
+        }
+    }
+
+    
+    &__label{
+        font-size: 1.3rem;
+        font-weight: 700rem;
+        margin-left: 2rem;
+        margin-top: .7rem;
+        display: block; // takes up 100% of the width
+        transition: all .3s;
+    }
+    
+    // Below - both children of form__group // note the siblin has to be placed after the selector = input + label
+    // + ajacent/below siblin selector // ~ general siblin selcetor for more than one siblin, not directly below
+
+    &__input:placeholder-shown + &__label{ 
+        opacity: 0;
+        visibility: hidden; // use visiblility And opacity beacause you cant annimate visability but you can opacity and its smoother
+        transform: translateY(-.4rem);
+    }
+
+    &__radio-group{
+        width: 49%;
+        display: inline-block;//to display side by side, only takes up content space
+
+        @include respond (tab-port){
+            width:100%;
+            margin-bottom: 2rem;
+        }
+    }
+
+    &__radio-input{
+        display: none;
+    }
+
+    &__radio-label{
+        font-size: $default-font-size;
+        cursor: pointer;// hand
+        position: relative; // parent needs to be relative to absolute child
+        padding-left: 4.5rem;
+    }
+
+    &__radio-button{
+        height: 3rem;
+        width: 3rem;
+        border: .5rem solid $color-primary;
+        border-radius: 50%; //to make it round
+        display: inline-block; //height and width properties will only apply to a block/inline-block element
+        position: absolute; // to put the button where we want / left, top etc
+        left: 0;
+        top: -.4rem;
+       
+        &::after{
+
+            height: 1.3rem;
+            width: 1.3rem;
+            content: "";// sudo element must always state content
+            display: block;
+            border-radius: 50%;
+            @include absCenter;
+            //note- above position doesnt have to be relative as its position has already been set on the page but needs does need to be specified
+            background-color: $color-primary;
+            opacity: 0;
+            transition: opacity, .2s;
+
+        }
+    }
+
+    &__radio-input:checked ~ &__radio-label &__radio-button::after {//sudo element for when a radio button/checked box is selected/checked// as soon as we hit the label element the radio input becomes checked, we then select the sibling(~) of it (could have used the direct child (+)) and then add the child of that sibling with a space and then the after sudo element of it (::after) as thats the one we want to change each time the radio input is selected!
+        opacity: 1; //when its selected it gets a opacity of 1
+    }
+}

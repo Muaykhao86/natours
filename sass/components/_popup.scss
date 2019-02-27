@@ -1,0 +1,140 @@
+.popup{
+    height: 100vh;
+    width: 100%;
+    position: fixed;//doesnt move as we scroll
+    background-color: rgba( $color-black, .9);
+    top:0;//needed to specify the point of origin to view the background as ITS TAKEN OUT OF THE FLOW when fixed/absolute positioning
+    left:0;
+    z-index:2500;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3s;
+   
+   //NEW CSS - Backdrop-filter- changes (blur/invert/brightness) the background on the element selected but only works on safari at the moment 14/9/18
+
+
+    // BROWSER SUPPORT TESTING!! USING A FEATURE QUERY!!
+    // Here we are testing to see whether the browser supports a certain property (NOTE: HAVE TO SPECIFY THE VALUE ASWELL eg. blur(10px))
+    // This is also know as gracful dedragation - if its compatiple then do this ->{}
+
+    @supports( -webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px)){
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        background-color: rgba( $color-black, .3);
+    }
+   
+    &__content{
+        @include absCenter;
+        background-color: $color-white;
+        width: 75%;
+        box-shadow: $box-shadow-4;
+        border-radius: $default-border-radius;
+        overflow: hidden; //stop pictures overflowing the border/border radius
+        display: table;// so the content is a table therefor the left/right are table cells- so the browser will automatically give them the same height
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(.25); // have to write transform again due to the center mixin
+        transition: all .5s .2s; //.2s is the transition/animation delay  //for small to large scale up
+    
+    
+        @include respond (tab-port){
+            width:100%;
+        }
+    }
+
+    &__left{
+        
+        display: table-cell;
+        width: 33.3333333%;//to make roughly 100%
+        vertical-align: middle;//property to use with tablecells to line them up withe the parents middle
+      
+        @include respond (tab-port){
+           width:100%;
+           display: block;
+        }
+    }
+   
+    &__right{
+        
+        display: table-cell;//could use float: left to put them side by side//left or right, doesnt matter. But to center the right side easier we use table
+        width: 66.66666667%;//to make roughly 100%
+        vertical-align: middle;
+        padding: 3rem 5rem;
+
+        @include respond (tab-port){
+            width:100%;
+            display: block;
+            
+        }
+       
+
+    }
+
+
+    &__img {
+        display: block;//one on top of the other
+        width:96%; //take up the parent containers full width//bug at 100% clears with 96??
+        
+        @include respond(tab-port) {
+            width: 50%;
+            height: 30rem;
+            float: left;
+            object-fit:cover;
+            margin-bottom: 2rem;
+         }
+
+         @include respond(phone) {
+            display: none;
+         }
+    }
+
+    &__text{
+        font-size: 1.4rem;
+        margin-bottom: 4rem;
+
+        -moz-column-count: 2; 
+        -moz-column-gap: 4rem; 
+        -moz-column-rule: .1rem solid $color-grey-light-2; 
+
+
+        column-count: 2; //new property that specifies how many columns you want
+        column-gap: 4rem; //specifies the column space - 1em = 14px as its the font size of the current element 1.4rem
+        column-rule: .1rem solid $color-grey-light-2; //specifies a line inbetween the columns
+
+        -webkit-hyphens: auto;//new property so needs prefixes to work in modern browsers
+        -moz-hyphens: auto;
+        -ms-hyphens: auto;
+        hyphens: auto;// automatically sets hyfins when new lines are made// must set the language in the html
+    }
+    
+
+    // OPEN STATES
+
+    &:target{//when the button book tour is clicked it goes to the target popup, which we change opacity and visibility to visible 
+        opacity: 1;
+        visibility: visible;
+        }
+    
+    &:target &__content{//when the button book tour is clicked it goes to the target popup, it selects the content element here aswell
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    
+    &__close{
+        &:link,
+        &:visited{
+            color: $color-grey-dark;
+            position: absolute;//positioned reletive to the popup content
+            top:2.5rem;
+            right: 3.5rem; //or could put line height to 1 to align close icon
+            font-size: 3rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+        &:hover{
+            color: $color-primary;
+        }
+            
+    }
+
+}

@@ -1,0 +1,121 @@
+// Reusable components
+
+.btn{
+
+    // Below- to get rid of error about empty content in css file. 
+    text-align: center;
+
+    /* Below- :
+    -link/visited is the sudo class which is a special state/condition of the selector in question
+    -link is what it looks like in normal state, visited is after it has been visited, 
+        below I want them to look the same 
+    -should always give a element a display of inline-block if you are going to give it padding, H, width etc*/
+    &, //translates to Button // need to put it in as <button> element doesnt have :link/visited like a anchor tag
+    &:link, 
+    &:visited{
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 1.5rem 4rem;
+        display: inline-block;
+        border-radius: 10rem;
+        transition: all .2s;
+        position: relative;
+        font-size: $default-font-size;
+
+    //Changes for the default <button> element
+    
+    border: none;
+    cursor: pointer;
+    }
+
+    &:hover{
+        transform: translateY(-.3rem);
+        box-shadow: $box-shadow-button-1;
+        
+        /* Below
+        -opacity makes it disapear while scaling (more vertically)*/
+        &::after{
+            transform: scalex(1.4) scaleY(1.6);
+            opacity: 0;
+        }
+    }
+
+    /* Below 
+        -the shadow and blur is less to make it look like the button is further away*/
+    &:active, 
+    &:focus{
+        outline: none; //Changes for the default <button> element
+        transform: translateY(-.1rem);
+        box-shadow: $box-shadow-button-2;
+    }
+    
+    &--white{
+        background-color: $color-white;
+        color: $color-grey-dark;
+       
+        &::after{
+            background-color: $color-white;
+        }
+    }
+    &--green{
+        background-color: $color-primary;
+        color: $color-white;
+       
+        &::after{
+            background-color: $color-primary;
+        }
+    }
+
+    /* Below
+        -a hidden element behind the button
+        -content is always nessessary even if left blank, display is nessessary aswell 
+        -the sudo element is seen as a child of button so height is 100% of the button etc
+        -z-index puts a element to the back/behind 
+        -transition states what and how long the transformation is*/
+    &::after{
+        content: '';
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+        border-radius: 10rem;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        transition: all .5s;
+    }
+
+    /* Below
+    -animation-fill-mode: backwards applies the animation settings before its animated */
+    &--animation{
+    animation: moveInBottom 2s ease-out 2s backwards;
+    }
+}
+
+.btn-text{
+    &:link,
+    &:visited{
+        font-size: $default-font-size;
+        color: $color-primary;
+        display: inline-block;
+        text-decoration: none;
+        // Can use pixels here because its such a small unit the page would have to vhange durasticly for it to change 
+        border-bottom: 1px solid $color-primary;
+        padding: 3px;
+    }
+
+    &:hover{
+        background-color: $color-primary;
+        color: $color-white;
+        box-shadow: $box-shadow-button-1;
+        transform: translateY(-.2rem)
+
+    }
+
+    &:active{
+        transform: translateY(0);
+        box-shadow: $box-shadow-button-2;
+
+    }
+
+}
